@@ -263,5 +263,25 @@ public class LinkedList {
 
         head = dummy1.next;
     }
+//Really Important
+    public void removeDuplicates() {
+        Set<Integer> values = new HashSet<>();
+        /*
+        A HashSet automatically manages duplicates, which makes it an ideal choice. When you try to add a duplicate value to a HashSet, the set will ignore it.
+        */
+        Node previous = null;
+        Node current = head;
+        while (current != null) {
+            if (values.contains(current.value)) {
+                previous.next = current.next;
+                length -= 1;
+            } else {
+                values.add(current.value);
+                previous = current;
+                // a null node can't .next'ed.
+            }
+            current = current.next;
+        }
+    }
 
 }
