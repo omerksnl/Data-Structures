@@ -1,2 +1,2 @@
-# Cotton
+# Data Structures
 Main Educational Repository
