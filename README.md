@@ -1,2 +1,2 @@
 # Data Structures and Algorithms
-Main Educational Repository for Poor Comp-sci souls
+Main DSA Codes for Poor Comp-sci souls
