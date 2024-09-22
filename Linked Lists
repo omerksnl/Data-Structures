@@ -313,5 +313,31 @@ public int binaryToDecimal(){
 
         head = dummyNode.next;
     }
+public Node addTwoNumbers(Node l1, Node l2) {
+        int add = 0;
+        Node dummy = new Node(0);
+        Node tail = dummy;
+
+        while(l1 != null || l2 != null || add != 0){
+            int digit1 = (l1 != null) ? l1.value : 0;
+            int digit2 = (l2 != null) ? l2.value : 0;
+
+            int sum=digit1+digit2+add;
+            int digit=sum%10;
+            add=sum/10;
+
+            Node newNode= new Node(digit);
+            tail.next=newNode;
+            tail=tail.next;
+
+            l1 = (l1 != null) ? l1.next : null;
+            l2 = (l2 != null) ? l2.next : null;
+
+        }
+        Node result = dummy.next;
+        dummy.next=null;
+        return result;
+
+    }
 
 }
