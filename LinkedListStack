@@ -1,0 +1,620 @@
+import java.util.HashSet;
+import java.util.Set;
+
+public class LinkedList {
+
+    private Node head;
+    private Node tail;
+    private int length;
+
+    public class Node {
+        int value;
+        Node next;
+
+        Node(int value) {
+            this.value = value;
+        }
+    }
+
+    public LinkedList(int value) {
+        Node newNode = new Node(value);
+        head = newNode;
+        tail = newNode;
+        length = 1;
+    }
+
+    public LinkedList() {
+        head = null;
+        tail = null;
+        length = 0;
+    }
+
+    public Node getHead() {
+        return head;
+    }
+
+    public Node getTail() {
+        return tail;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void printList() {
+        Node temp = head;
+        while (temp != null) {
+            System.out.println(temp.value);
+            temp = temp.next;
+        }
+    }
+
+    public void printAll() {
+        if (length == 0) {
+            System.out.println("Head: null");
+            System.out.println("Tail: null");
+        } else {
+            System.out.println("Head: " + head.value);
+            System.out.println("Tail: " + tail.value);
+        }
+        System.out.println("Length:" + length);
+        System.out.println("\nLinked List:");
+        if (length == 0) {
+            System.out.println("empty");
+        } else {
+            printList();
+        }
+    }
+
+    public void makeEmpty() {
+        head = null;
+        tail = null;
+        length = 0;
+    }
+
+    public void append(int value) {
+        Node newNode = new Node(value);
+        if (length == 0) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail.next = newNode;
+            tail = newNode;
+        }
+        length++;
+    }
+
+    public Node removeLast() {
+        if (length == 0) return null;
+        Node temp = head;
+        Node pre = head;
+        while (temp.next != null) {
+            pre = temp;
+            temp = temp.next;
+        }
+        tail = pre;
+        tail.next = null;
+        length--;
+        if (length == 0) {
+            head = null;
+            tail = null;
+        }
+        return temp;
+    }
+
+    public void prepend(int value) {
+        Node newNode = new Node(value);
+        if (length == 0) {
+            head = newNode;
+            tail = newNode;
+        }
+        newNode.next = head;
+        head = newNode;
+        length++;
+    }
+
+    public Node removeFirst() {
+        if (length == 0) return null;
+        Node temp = head;
+        head = head.next;
+        temp.next = null;
+        length--;
+        if (length == 0) {
+            tail = null;
+        }
+        return temp;
+    }
+
+    public Node get(int index) {
+        if (index < 0 || index >= length) return null;
+        Node temp = head;
+        for (int i = 0; i < index; i++) {
+            temp = temp.next;
+        }
+        return temp;
+    }
+
+    public boolean set(int index, int value) {
+        Node temp = get(index);
+        if (temp != null) {
+            temp.value = value;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean insert(int index, int value) {
+        if (index < 0 || index > length) return false;
+        if (index == 0) {
+            prepend(value);
+            return true;
+        }
+        if (index == length) {
+            append(value);
+            return true;
+        }
+        Node newNode = new Node(value);
+        Node temp = get(index - 1);
+        newNode.next = temp.next;
+        temp.next = newNode;
+        length++;
+        return true;
+    }
+
+    public Node remove(int index) {
+        if (index < 0 || index >= length) return null;
+        if (index == 0) return removeFirst();
+        if (index == length - 1) return removeLast();
+
+        Node prev = get(index - 1);
+        Node temp = prev.next;
+
+        prev.next = temp.next;
+        temp.next = null;
+        length--;
+        return temp;
+    }
+
+    public LinkedList reverse() {
+        Node prev = null;
+        Node current = head;
+        Node next;
+
+        while (current != null) {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+        head = prev;
+
+        return this;
+    }
+    public LinkedList fibBetween(int a, int b){
+int next;
+int first=0;
+int second=1;
+LinkedList result=new LinkedList();
+for(int i=0;i<b;i++){
+    next=first+second;
+    if(next>a){
+        if(next<b){
+            result.append(next);
+        }
+    }
+    first=second;
+    second=next;
+}
+return result;
+    }
+public void delete2(){
+        Node temp=head;
+        Node prev=null;
+        if(head.value==2){
+            head=null;
+        }
+        while (temp != null){
+            if(temp.value==2){
+                if(prev != null){
+                    prev.next=temp.next;
+                }
+            }
+            prev=temp;
+            temp=temp.next;
+        }
+
+}
+    public Node findMiddleNode() {
+        Node slow = head;
+        Node fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+
+    }
+
+    public boolean hasLoop() {
+        Node slow = head;
+        Node fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Node findKthFromEnd(int k) {
+        Node find = head;
+        Node kth = head;
+        int length = 0;
+        while (find != null) {
+            find = find.next;
+            length++;
+        }
+        if (length < k) {
+            return null;
+        }
+        for (int i = 0; i < length - k; i++) {
+            kth = kth.next;
+        }
+        return kth;
+    }
+    /*   DOPER ANSWER OF UP THING
+    public Node findKthFromEnd(int k) {
+        Node slow = head;
+        Node fast = head;
+
+        for (int i = 0; i < k; i++) {
+            if (fast == null) {
+                return null;
+            }
+            fast = fast.next;
+        }
+
+        while (fast != null) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+
+        return slow;
+    }
+     */
+
+
+    //Zor ve Önemli.
+    public void partitionList(int x) {
+        if (head == null) return;
+
+        Node dummy1 = new Node(0);
+        Node dummy2 = new Node(0);
+        Node prev1 = dummy1;
+        Node prev2 = dummy2;
+        Node current = head;
+
+        while (current != null) {
+            if (current.value < x) {
+                prev1.next = current;
+                prev1 = current;
+            } else {
+                prev2.next = current;
+                prev2 = current;
+            }
+            current = current.next;
+        }
+
+        prev2.next = null;
+        prev1.next = dummy2.next;
+
+        head = dummy1.next;
+    }
+
+    //Really Important
+    public void removeDuplicates() {
+        Set<Integer> values = new HashSet<>();
+        /*
+        A HashSet automatically manages duplicates, which makes it an ideal choice. When you try to add a duplicate value to a HashSet, the set will ignore it.
+        */
+        Node previous = null;
+        Node current = head;
+        while (current != null) {
+            if (values.contains(current.value)) {
+                previous.next = current.next;
+                length -= 1;
+            } else {
+                values.add(current.value);
+                previous = current;
+                // a null node cant .next'ed.
+            }
+            current = current.next;
+        }
+    }
+
+    public int binaryToDecimal() {
+        int num = 0;
+        Node current = head;
+        while (current != null) {
+            num = num * 2 + current.value;
+            current = current.next;
+        }
+        return num;
+    }
+
+    //https://www.youtube.com/watch?v=61lP7_PViD8 explanation
+    public void reverseBetween(int startIndex, int endIndex) {
+        if (head == null) return;
+
+        Node dummyNode = new Node(0);
+        dummyNode.next = head;
+        Node previous = dummyNode;
+
+        for (int i = 0; i < startIndex; i++) {
+            previous = previous.next;
+        }
+        Node currentNode = previous.next;
+        for (int i = 0; i < endIndex - startIndex; i++) {
+            Node temp = currentNode.next;
+            currentNode.next = temp.next;
+            temp.next = previous.next;
+            previous.next = temp;
+        }
+
+        head = dummyNode.next;
+    }
+
+    public Node addTwoNumbers(Node l1, Node l2) {
+        int add = 0;
+        Node dummy = new Node(0);
+        Node tail = dummy;
+
+        while (l1 != null || l2 != null || add != 0) {
+            int digit1 = (l1 != null) ? l1.value : 0;
+            int digit2 = (l2 != null) ? l2.value : 0;
+
+            int sum = digit1 + digit2 + add;
+            int digit = sum % 10;
+            add = sum / 10;
+
+            Node newNode = new Node(digit);
+            tail.next = newNode;
+            tail = tail.next;
+
+            l1 = (l1 != null) ? l1.next : null;
+            l2 = (l2 != null) ? l2.next : null;
+
+        }
+        Node result = dummy.next;
+        dummy.next = null;
+        return result;
+
+    }
+
+    /*
+    it makes 1,3,5 ve 3,7,9 -> 1,3,3,5,7,9 
+     */
+    public Node mergeTwoLists(LinkedList list1, LinkedList list2) {
+        Node dummy = new Node(0);
+        Node cur = dummy;
+        Node a = list1.head;
+        Node b = list2.head;
+
+        while (a != null && b != null) {
+            if (a.value > b.value) {
+                cur.next = b;
+                b = b.next;
+            } else {
+                cur.next = a;
+                a = a.next;
+            }
+            cur = cur.next;
+        }
+
+        cur.next = (a != null) ? a : b;
+
+        return dummy.next;
+    }
+
+    public int smallest() { //#1 Exercise LinkedList
+        if (head == null) {
+            throw new IllegalStateException("List is empty");
+        }
+        int min = head.value;
+        Node current = head.next;
+        while (current != null) {
+            if (current.value < min) {
+                min = current.value;
+            }
+            current = current.next;
+        }
+
+        return min;
+    }
+
+    public void move(Node X, int n) {//#9 LinkedList
+        Node prev = null;
+        Node current = head;
+        while (current != null && current != X) {
+            prev = current;
+            current = current.next;
+        }
+        Node target = X;
+        for (int i = 0; i < n; i++) {
+            target = target.next;
+        }
+
+        if (prev == null) {
+            head = X.next;
+        } else {
+            assert current != null;
+            current.next = X.next;
+        }
+        X.next = target.next;
+        target.next = X;
+    }
+
+    public static LinkedList primeFactors(int N) {
+        LinkedList result = new LinkedList(1);
+
+        // Handle edge cases
+        if (N <= 1) {
+            return result;
+        }
+
+        // Check for 2 as a factor
+        while (N % 2 == 0) {
+            result.append(2);
+            N = N / 2;
+        }
+
+        // Check for odd factors
+        for (int i = 3; i <= Math.sqrt(N); i += 2) {
+            while (N % i == 0) {
+                result.append(i);
+                N = N / i;
+            }
+        }
+
+        // If N is a prime number greater than 2
+        if (N > 2) {
+            result.append(N);
+        }
+        result.removeFirst();
+        return result;
+    }
+
+    public boolean palindrome() {
+        Node slow = head;
+        Node fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        Node secondHalf = reverseList(slow.next);
+        Node firstHalf = head;
+        while (secondHalf != null) {
+            if (firstHalf.value != secondHalf.value) {
+                return false;
+            }
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
+        }
+        return true;
+    }
+
+    public Node reverseList(Node node) {
+        Node prev = null;
+        Node current = node;
+        Node next;
+        while (current != null) {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+        return prev;
+    }
+
+    public LinkedList removeDivisibleByN(int N) {
+        LinkedList removedList = new LinkedList();
+        Node current = head;
+        Node prev=null;
+        while (current != null) {
+            if (N % current.value== 0) {
+                removedList.append(current.value);
+                if(prev != null){
+                    prev.next=current.next;
+                }
+            }
+            prev=current;
+            current = current.next;
+        }
+
+        return removedList;
+    }
+
+    public LinkedList intersection(LinkedList l1, LinkedList l2) {
+        LinkedList result = new LinkedList();
+        Node current1 = l1.head;
+        Node current2 = l2.head;
+        while (current1 != null && current2 != null) {
+            if (current1.value == current2.value) {
+                result.append(current1.value);
+                current1 = current1.next;
+                current2 = current2.next;
+            } else if (current1.value < current2.value) {
+                current1 = current1.next;
+            } else {
+                current2 = current2.next;
+            }
+        }
+        return result;
+    }
+
+    public void deleteAll(int X) {
+        Node current = head;
+        for (int i = 0; i < this.length; i++) {
+            while (current.next != null && current.next.value != X) {
+                current = current.next;
+            }
+            if (current.next != null) {
+                current.next = current.next.next;
+            }
+        }
+        this.printList();
+    }
+
+    public LinkedList primeDivisors(int N) {
+        LinkedList primes = new LinkedList(2);
+        LinkedList result = new LinkedList();
+
+        for (int i = 3; i < N; i++) {
+            boolean a = false;
+            for (int j = i - 1; j > 1; j--) {
+                a = i % j != 0;
+            }
+            if (a) {
+                if (N % i == 0) {
+                    primes.append(i);
+                }
+            }
+        }
+        Node temp = primes.head;
+
+        while (temp != null) {
+            while (N % temp.value == 0) {
+                N = N / temp.value;
+                result.append(temp.value);
+            }
+            temp = temp.next;
+
+        }
+        return result;
+    }
+
+    public LinkedList oddIndexedElements() {
+        LinkedList oddList = new LinkedList();
+        if (head == null) return oddList;
+        Node current = head;
+        Node prev = null;
+        int index = 1;
+        while (current != null) {
+            if (index % 2 != 0) {  //
+                oddList.append(current.value);
+                if (prev != null) {
+                    prev.next = current.next;
+                }
+            } else {
+                prev = current;
+            }
+            current = current.next;
+            index++;
+
+
+        }
+        return oddList;
+    }
+}
