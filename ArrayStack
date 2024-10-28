@@ -1,0 +1,97 @@
+public class ArrayStack {
+    private int[] stack;
+    private int top;
+    private int capacity;
+
+    // Constructor to initialize the stack with a given capacity
+    public ArrayStack(int size) {
+        stack = new int[size];
+        capacity = size;
+        top = -1;
+    }
+
+    // Pushes an element onto the stack
+    public void push(int value) {
+        if (isFull()) {
+            System.out.println("Stack Overflow");
+            return;
+        }
+        stack[++top] = value;
+    }
+
+    // Removes and returns the top element from the stack
+    public int pop() {
+        if (isEmpty()) {
+            System.out.println("Stack Underflow");
+            return -1;
+        }
+        return stack[top--];
+    }
+
+    // Returns the top element of the stack without removing it
+    public int peek() {
+        if (isEmpty()) {
+            System.out.println("Stack is Empty");
+            return -1;
+        }
+        return stack[top];
+    }
+
+    // Checks if the stack is empty
+    public boolean isEmpty() {
+        return top == -1;
+    }
+
+    // Checks if the stack is full
+    public boolean isFull() {
+        return top == capacity - 1;
+    }
+
+    // Prints the stack elements
+    public void printStack() {
+        if (isEmpty()) {
+            System.out.println("Stack is Empty");
+            return;
+        }
+        System.out.print("Stack elements: ");
+        for (int i = 0; i <= top; i++) {
+            System.out.print(stack[i] + " ");
+        }
+        System.out.println();
+    }
+    public static boolean isBalanced(int[] a) {
+        ArrayStack stack = new ArrayStack(a.length);  // Initialize the stack with sufficient capacity
+
+        for (int num : a) {
+            if (num < 10) {
+                // Push all elements < 10 onto the stack
+                stack.push(num);
+            } else {
+                // Check if the stack is empty or top element of stack doesn't balance with `num`
+                if (stack.isEmpty() || num != stack.pop() + 10) {
+                    return false;
+                }
+            }
+        }
+
+        // The array is balanced if the stack is empty at the end
+        return stack.isEmpty();
+    }
+
+    public static void main(String[] args) {
+        ArrayStack stack = new ArrayStack(5);
+        stack.push(10);
+        stack.push(20);
+        stack.push(30);
+        stack.printStack();
+        System.out.println("Top element is: " + stack.peek());
+        stack.pop();
+        stack.printStack();
+
+        int[] array1 = {2, 3, 13, 12, 4, 14};
+        int[] array2 = {5, 15, 4, 3, 14, 13};
+
+        System.out.println("Is array1 balanced? " + isBalanced(array1));  // Should return true
+        System.out.println("Is array2 balanced? " + isBalanced(array2));  // Should return false
+    }
+}
