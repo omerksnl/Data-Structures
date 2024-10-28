@@ -1,0 +1,52 @@
+Practical Tips for Analyzing Code Complexity
+
+Single Loop
+(runs n times): O(n)
+Example: A loop that iterates through an array once.
+
+Nested Loops
+(one loop inside another, both running n times): O(n^2)
+If you see nested loops that depend on each other, they usually indicate quadratic complexity.
+
+Loop With Constant Jumps
+(e.g., for (int i = 0; i < n; i += 5)): O(n)
+Even if the loop increments by a constant (e.g., by 5), it’s still linear because we ignore constants in Big-O.
+
+**Use “Divide and Conquer” as a Signal for O(log n) or O(n log n)
+Halving in Recursive Calls (e.g., n/2, n/3 in each recursion): O(log n)
+Binary search or any problem that splits the input in half with each step generally has O(log n).
+
+Sort and Conquer
+(e.g., sorting + recursive operations on halves): O(n log n)
+Many sorting algorithms (like merge sort) work by sorting and then combining. This usually results in O(n log n) complexity.
+
+Recursion with Linear Growth
+If each recursive call processes the remaining portion (e.g., f(n - 1)), you’re likely looking at O(n).
+For example, factorial calculations (where you recursively calculate n * f(n-1)) are O(n) since each level just reduces n by 1 until reaching 0.
+
+Multiple Data Structures (Additive vs. Multiplicative)
+Separate Loops on Different Data Structures: Add their complexities.
+Example: Iterating over two arrays individually is O(n + m).
+
+Nested Loops on Different Data Structures: Multiply their complexities.
+Example: If you nest a loop over one array inside a loop over another array, the complexity is O(n * m), where n is the size of the first array, and m is the size of the second.
+Detect Constant Time Operations (O(1))
+
+Accessing an element by index in an array or adding/removing an item from a hash table is O(1).
+Basic operations (arithmetic, comparisons) and assignments are also constant time.
+A function that performs a fixed number of these operations without loops or recursion is O(1).
+
+Check for Early Exit Conditions
+Sometimes, code has early exit conditions that can change the worst-case complexity.
+Example: A loop searching for a target in an array stops as soon as it’s found. Though the worst case might be O(n), the best case is O(1).
+Common Patterns and Complexities
+
+Counting Unique Pairs in Array:
+Nested loop, likely O(n^2).
+Array with Hashing (e.g., checking for duplicates): Loop with hash map insertions is O(n).
+String Concatenation: Watch out if you’re repeatedly concatenating strings in a loop, which can inadvertently be O(n^2) because each concatenation may create a new string.
+Space Complexity as a Clue
+
+Recursive algorithms often require O(n) space complexity for the call stack if they go n levels deep.
+Algorithms that use additional data structures (arrays, hash maps, or lists) of size n will also have O(n) space complexity.
+Space complexity is often a strong indicator of time complexity when extra data storage scales with the input.
